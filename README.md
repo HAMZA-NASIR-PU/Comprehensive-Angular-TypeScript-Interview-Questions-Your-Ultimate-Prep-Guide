@@ -114,3 +114,178 @@ delete currentFilters[101];
 - TypeScript ensures that the keys are numbers and the values are strings, providing type safety while working with such objects.
 
 By explicitly defining types, TypeScript helps catch potential errors during development and makes the code more readable and maintainable.
+
+
+## Understanding TypeScript Types and Interfaces: Key Concepts with React Examples
+
+
+In TypeScript, both types and interfaces allow you to define the shape of an object or specify the contract for classes and functions. They are similar but have some differences in usage. Below are the explanations along with examples in both TypeScript and React.
+
+### 1. Type Aliases
+
+Type aliases allow you to define custom types for primitive values, objects, functions, arrays, and tuples.
+
+- Example: Type Alias for Objects
+
+```typescript
+type User = {
+  id: number;
+  name: string;
+  isAdmin: boolean;
+};
+
+const user: User = {
+  id: 1,
+  name: 'John Doe',
+  isAdmin: false,
+};
+```
+
+- Example: Type Alias for Functions
+
+```typescript
+type Greet = (name: string) => string;
+
+const greet: Greet = (name) => `Hello, ${name}`;
+
+console.log(greet('Alice'));  // Output: Hello, Alice
+
+```
+
+- Example: Using Type in React Props
+
+```typescript
+type UserProps = {
+  user: {
+    id: number;
+    name: string;
+    isAdmin: boolean;
+  };
+};
+
+const UserComponent: React.FC<UserProps> = ({ user }) => {
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>ID: {user.id}</p>
+      <p>Admin: {user.isAdmin ? 'Yes' : 'No'}</p>
+    </div>
+  );
+};
+
+// Usage:
+<UserComponent user={{ id: 1, name: 'John Doe', isAdmin: false }} />
+
+
+```
+
+### 2.  Interfaces
+
+Interfaces are similar to types but are used to define the structure of an object or class. One key difference is that interfaces are extendable, meaning you can combine multiple interfaces.
+
+- Example: Interface for Objects
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+  isAdmin: boolean;
+}
+
+const user: User = {
+  id: 1,
+  name: 'Jane Doe',
+  isAdmin: true,
+};
+```
+
+- Example: Extending Interfaces
+
+```typescript
+interface User {
+  id: number;
+  name: string;
+}
+
+interface AdminUser extends User {
+  isAdmin: boolean;
+}
+
+const admin: AdminUser = {
+  id: 1,
+  name: 'Jane Doe',
+  isAdmin: true,
+};
+```
+
+- Example: Using Interface in React Props
+
+```typescript
+interface UserProps {
+  user: {
+    id: number;
+    name: string;
+    isAdmin: boolean;
+  };
+}
+
+const UserComponent: React.FC<UserProps> = ({ user }) => {
+  return (
+    <div>
+      <h1>{user.name}</h1>
+      <p>ID: {user.id}</p>
+      <p>Admin: {user.isAdmin ? 'Yes' : 'No'}</p>
+    </div>
+  );
+};
+
+// Usage:
+<UserComponent user={{ id: 1, name: 'Jane Doe', isAdmin: true }} />
+```
+
+
+### Differences between Type and Interface
+
+- `Extensibility`: Interfaces are extendable, which means you can extend them to include properties from another interface or even extend multiple interfaces.
+
+```typescript
+interface Animal {
+  species: string;
+}
+
+interface Dog extends Animal {
+  bark(): void;
+}
+```
+
+On the other hand, types can be intersected but cannot be extended directly.
+
+```typescript
+type Animal = {
+  species: string;
+};
+
+type Dog = Animal & {
+  bark: () => void;
+};
+```
+
+- `Declaration merging`: Interfaces can be merged when declared multiple times with the same name, but types do not allow this.
+
+```typescript
+interface User {
+  name: string;
+}
+
+interface User {
+  age: number;
+}
+
+const user: User = {
+  name: "John",
+  age: 30,
+};
+```
+
+- `Complexity`: Types are better suited for defining complex types (e.g., unions or intersections), while interfaces are usually more suitable for object shapes.
+
